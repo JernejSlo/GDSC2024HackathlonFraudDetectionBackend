@@ -34,23 +34,38 @@ class FraudDetectionModel():
         model.load_weights(weights_path)  # Load the saved weights
         return model
 
-    def save_model(self):
+    def save_model(self, model_weights):
         # Save the entire model to a file
-        self.model.save(self.weights_path)
-        print("Model saved to", self.weights_path)
-    def train(self, train_data, epochs=10, batch_size=32, validation_data=None):
+        model_w = model_weights
+        if model_w.split(".")[-1] != "keras":
+            model_w += ".keras"
+        self.model.save(model_w)
+        print("Model saved to", model_w)
+    def train(self, X_train, X_val, y_train, y_val, epochs=10, batch_size=32, validation_data=None):
         """
-                    This funtion handles training the model as well as saving the model weights.
+            This function handles training the model using NumPy arrays and also saves the model weights.
 
-                    :param data: data to use to train the model.
-                    :param kwargs: additional parameters for new training or training using old weights.
-                    :return: status of the model training
-                """
-        # Assuming train_data is a TensorFlow dataset or a tuple (inputs, targets)
+            :param train_data: Training data as a tuple (inputs, targets) where both are NumPy arrays.
+            :param epochs: Number of epochs to train for.
+            :param batch_size: Size of batches to use during training.
+            :param validation_data: Validation data as a tuple (inputs, targets) where both are NumPy arrays.
+            :return: Training history, containing details like loss and accuracy per epoch.
+        """
         try:
-            self.model.fit(train_data, epochs=epochs, batch_size=batch_size, validation_data=validation_data)
+            self.model.summary()
+
+            history = self.model.fit(
+                x=X_train,  # Input features reshaped for LSTM
+                y=y_train,  # Corresponding targets
+                epochs=10,
+                batch_size=32,
+                validation_data=(X_val, y_val)
+            )
+            return history
         except Exception as e:
+            print("Model failed during training.")
             raise e
+
 
 
 

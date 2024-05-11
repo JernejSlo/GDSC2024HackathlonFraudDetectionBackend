@@ -23,10 +23,10 @@ class SessionManager(object):
         with self.lock:
             return self.sessions.get(session_id)
 
-    def initialize_fraud_detection_services(self,n):
+    def initialize_fraud_detection_services(self,n, input_shape, num_classes):
         for i in range(n):
             session_id = self.get_random_string(5)
-            data = {"model": FraudDetectionModel(self.model_path)}
+            data = {"model": FraudDetectionModel(self.model_path,input_shape,num_classes)}
             session = {"owner": "", "data": data,"running": False,"disabled": False}
             print(session)
             self.sessions[session_id] = session

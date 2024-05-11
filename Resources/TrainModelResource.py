@@ -3,6 +3,7 @@ from flask import request
 from Resources.GeneralResource import GeneralResource
 from Services.SessionSharingResource import SessionSharingResource
 from Services.QueryFraudDetectorService import QueryFraudDetectorService
+from Services.TrainModelService import TrainModelService
 
 
 class TrainModelResource(GeneralResource):
@@ -11,7 +12,7 @@ class TrainModelResource(GeneralResource):
         super().__init__()
 
         # Inject all dependencies for resource in constructor
-        self.calc = QueryFraudDetectorService()
+        self.calc = TrainModelService()
 
 
     def post(self):
