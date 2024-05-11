@@ -21,10 +21,10 @@ def create_app(session_manager):
     return app
 
 # sessions logic
-model_path = ""
+model_path =  "./ML/Models/FDMWeights.keras"
 session_manager = SessionManager(model_path)
 
-session_manager.initialize_fraud_detection_services(10,(5,5),5)
+session_manager.initialize_fraud_detection_services(10,(5,7),2)
 
 
 logging.basicConfig(filename='record.log', level=logging.INFO, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')

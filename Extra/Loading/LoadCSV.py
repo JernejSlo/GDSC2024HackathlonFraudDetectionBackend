@@ -3,12 +3,9 @@ import pandas as pd
 import tensorflow as tf
 class LoadCSV:
     def parseCSV(self, data_path):
-        dataset = tf.data.experimental.make_csv_dataset(
-            file_pattern=data_path,
-            batch_size=1,
-            num_epochs=1
-        )
-        return dataset
+        data = pd.read_csv(data_path)
+
+
 
 
     def parse_data_series_csv(self, data_path, split_by, n, target_column,num_classes):

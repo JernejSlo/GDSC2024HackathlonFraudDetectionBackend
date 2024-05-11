@@ -79,6 +79,6 @@ class FraudDetectionModel():
             :return:
         """
         # handle prediction here
-        prediction = ""
+        predictions = self.model.predict(data)
 
-        return prediction
+        return predictions
