@@ -41,7 +41,7 @@ class FraudDetectionModel():
             model_w += ".keras"
         self.model.save(model_w)
         print("Model saved to", model_w)
-    def train(self, X_train, X_val, y_train, y_val, epochs=10, batch_size=32, validation_data=None):
+    def train(self, X_train, X_val, y_train, y_val, user_model_train,user_model_val, epochs=10, batch_size=32, validation_data=None):
         """
             This function handles training the model using NumPy arrays and also saves the model weights.
 
@@ -55,11 +55,11 @@ class FraudDetectionModel():
             self.model.summary()
 
             history = self.model.fit(
-                x=X_train,  # Input features reshaped for LSTM
+                x=[X_train, user_model_train],  # Input features reshaped for LSTM
                 y=y_train,  # Corresponding targets
                 epochs=10,
                 batch_size=32,
-                validation_data=(X_val, y_val)
+                validation_data=(X_val, y_val, user_model_val)
             )
             return history
         except Exception as e:

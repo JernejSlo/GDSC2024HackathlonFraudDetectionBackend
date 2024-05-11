@@ -5,6 +5,7 @@ n_classes = 2
 
 request = {
     "model_weights": "./ML/Models/FDMWeights.keras",
+    "user_models_path": "./ML/Data/user_models.csv",
     "data_path": "./ML/Data/test_data.csv",
     "num_classes": 2,
     "user_model": "./ML/Data/user_models.csv",
