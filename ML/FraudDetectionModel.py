@@ -11,30 +11,32 @@ class FraudDetectionModel():
         self.input_shape = input_shape
         self.user_model_input_shape = user_model_input_shape
         self.num_classes = num_classes
+        self.weights_path = weights_path
         if os.path.exists(weights_path):
             print("Loading model from saved weights.")
             self.model = self.load_model(weights_path)
         else:
             print("No weights found. Creating a new model.")
             self.model = self.build_lstm_model()
-
+    def reload_model(self):
+        if os.path.exists(self.weights_path):
+            print("Loading model from saved weights.")
+            self.model = self.load_model(self.weights_path)
+        else:
+            print("No weights found. Creating a new model.")
+            self.model = self.build_lstm_model()
     def build_lstm_model(self):
 
         # Define the input for the time series data
         time_series_input = Input(shape=self.input_shape, name='time_series_input')
 
-        # Define the input for the user model data
-        # Assume user_model_input_shape is defined based on your user model data
         user_model_input = Input(shape=self.user_model_input_shape, name='user_model_input')
 
-        # Processing time series data through LSTM layers
         x = layers.LSTM(128, return_sequences=True)(time_series_input)
         x = layers.Dropout(0.3)(x)
         x = layers.LSTM(64, return_sequences=False)(x)
         x = layers.Dropout(0.3)(x)
 
-        # Combine the output of LSTM with the user model input
-        # Use layers.concatenate to merge the outputs along the last dimension
         combined = layers.concatenate([x, user_model_input])
 
         # Fully connected layers
@@ -73,7 +75,7 @@ class FraudDetectionModel():
         try:
             self.model.summary()
             history = self.model.fit(
-                x=[X_train, np.asarray(user_model_train)],  # Input features reshaped for LSTM
+                x=[X_train, np.asarray(user_model_train).astype("float32")],  # Input features reshaped for LSTM
                 y=y_train,  # Corresponding targets
                 epochs=10,
                 batch_size=32,

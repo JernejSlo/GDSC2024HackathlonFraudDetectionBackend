@@ -1,0 +1,11 @@
+TransactionId,UserId,Amount,LocationId,DateTime,TimeSince,MerchantFreq,TransactionType,TransactionDevice,Fraudulent,MerchantType
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical
+725,8,18.26,237,1451861703,0,0.0,0,Travel,Other,Physical

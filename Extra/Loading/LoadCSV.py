@@ -10,7 +10,29 @@ class LoadCSV:
         array_of_arrays = np.array([np.array(row) for row in numpy_array])
         return array_of_arrays
 
+    def convert_ints_to_floats(self, arr):
+        # Function to check if a string is a number (int or float)
+        def is_number(s):
+            try:
+                float(s)
+                return True
+            except ValueError:
+                return False
 
+        # Function to safely convert integers and numeric strings to floats
+        def safe_convert(item):
+            if isinstance(item, int):
+                return float(item)
+            elif isinstance(item, str) and is_number(item):
+                return float(item)
+            else:
+                return item
+
+        # Iterate over each sub-array and convert integers and numeric strings to floats
+        new_arr = np.array([np.array([safe_convert(item) for item in sub_arr], dtype=object)
+                            for sub_arr in arr], dtype=object)
+        print(new_arr.shape)
+        return new_arr
     def parse_data_series_csv(self, data_path, split_by, n, target_column,num_classes):
         # Load the CSV using Pandas
         data = pd.read_csv(data_path)
@@ -43,7 +65,7 @@ class LoadCSV:
                     y[-1] = np.asarray(y[-1])
                     series_array.append(np.delete(series_,column_index,1))
         series_array = np.asarray(series_array)
-        y = np.asarray(y)
+        y = np.asarray(y).astype("float32")
         print(series_array.shape)
         # Optionally convert series_dict to a more suitable format (e.g., tf.data.Dataset)
         # For now, we return the dictionary directly

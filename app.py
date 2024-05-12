@@ -9,6 +9,7 @@ import logging
 from Extra.SessionManager import SessionManager
 from Resources.QueryFraudDetectorResource import QueryFraudDetectorResource
 from Resources.TrainModelResource import TrainModelResource
+from Resources.UpdateFlaggedListResource import UpdateFlaggedListResource
 from Resources.UpdateUserModelResource import UpdateUserModelResource
 
 
@@ -20,13 +21,14 @@ def create_app(session_manager):
     api.add_resource(QueryFraudDetectorResource, '/detect_fraud',resource_class_args=[session_manager])
     api.add_resource(TrainModelResource, '/train_model')
     api.add_resource(UpdateUserModelResource, '/update_user_model')
+    api.add_resource(UpdateFlaggedListResource, '/update_flagged_list')
 
     return app
 
 # sessions logic
 model_path =  "./ML/Models/FDMWeights.keras"
 session_manager = SessionManager(model_path)
-inp = (5,7)
+inp = (10,10)
 inp2 = (27,)
 session_manager.initialize_fraud_detection_services(10,inp,inp2,2)
 

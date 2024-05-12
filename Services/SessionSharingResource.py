@@ -34,7 +34,7 @@ class SessionSharingResource(Resource):
             else:
                 self.set_session_active(self.session_id)
                 data, session_data = func(data_, data=session["data"])
-            self.un_assign_session(self.session_id)
+
             return HandleReturn().toJson(data)
         except Exception as e:
             return HandleReturn().handleError(str(e))

@@ -9,3 +9,4 @@ if response.status_code == 200:
     print("Response Content:", response.json())  # Assuming the response is JSON
 else:
     print("Failed to retrieve data:", response.text)
+

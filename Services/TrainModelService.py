@@ -31,13 +31,15 @@ class TrainModelService(GeneralCalculationService):
             for val in X:
                 split_by_identifier = int(val[0][group_by_column])
                 user_data = []
+
                 for user_model in user_model_data:
                     # change this so it can handle other than int etc.
-                    if (int(user_model[0]) == int(split_by_identifier)):
+                    print(int(user_model[1]) , int(split_by_identifier))
+                    if (int(user_model[1]) == int(split_by_identifier)):
                         user_data = user_model
                 user_model_data_extended.append(user_data)
             user_model_data_extended = np.asarray(user_model_data_extended)
-            print(user_model_data_extended.shape)
+            print("Extended", user_model_data_extended)
             print(user_model_data_extended,len(user_model_data_extended))
             print(len(y),len(X))
 
@@ -46,7 +48,7 @@ class TrainModelService(GeneralCalculationService):
             )
             X_train, X_val,user_model_train, user_model_val, y_train, y_val = np.array(X_train),np.array(X_val),np.array(user_model_train),np.array(user_model_val),np.array(y_train),np.array(y_val),
             model = FraudDetectionModel(self.model_weights, self.input_shape, self.input_shape_user_modeling, self.num_classes)
-            print(user_model_train.shape)
+
             model.train(X_train, X_val, y_train, y_val,user_model_train,user_model_val)
             model.save_model(self.model_weights)
         except Exception as e:
