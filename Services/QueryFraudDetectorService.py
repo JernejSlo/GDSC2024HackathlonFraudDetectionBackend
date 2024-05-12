@@ -32,7 +32,9 @@ class QueryFraudDetectorService(GeneralCalculationService):
     def predictFraud(self):
         classes = self.classes
         data = np.asarray(self.transaction_history)
-        predictions = self.model.predict(data)
+        user_model_data = np.asarray(self.user_model)
+        print(data,data.shape,user_model_data.shape)
+        predictions = self.model.predict([data,user_model_data])
         labels = []
         for prediction in predictions:
             pred = np.argmax(prediction)

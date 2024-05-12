@@ -23,14 +23,22 @@ class SessionManager(object):
         with self.lock:
             return self.sessions.get(session_id)
 
-    def initialize_fraud_detection_services(self,n, input_shape, num_classes):
+    def initialize_fraud_detection_services(self,n, input_shape,input_shape_2, num_classes):
         for i in range(n):
             session_id = self.get_random_string(5)
-            data = {"model": FraudDetectionModel(self.model_path,input_shape,num_classes)}
-            session = {"owner": "", "data": data,"running": False,"disabled": False}
+            data = {"model": FraudDetectionModel(self.model_path,input_shape,input_shape_2,num_classes)}
+            session = {"owner": "", "data": data,"running": False,"disabled": False,"reset": False}
             print(session)
             self.sessions[session_id] = session
-
+    def reset_weights(self,session_id):
+        model = self.sessions[session_id]["data"]["model"]
+        data = {"model": FraudDetectionModel(self.model_path, model.input_shape, model.user_model_input_shape, model.num_classes)}
+        session = {"owner": "", "data": data, "running": False, "disabled": False,"reset": False}
+        print(session)
+        self.sessions[session_id] = session
+    def set_models_to_be_reset(self):
+        for key in self.sessions:
+            self.sessions[key]["reset"] = True
     def assign_session(self, user_session_id):
         for key in self.sessions:
             with self.lock:

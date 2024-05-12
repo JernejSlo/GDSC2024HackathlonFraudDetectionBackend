@@ -13,10 +13,10 @@ class TrainModelService(GeneralCalculationService):
     """Description of the class"""
 
 
-    def set_data(self, input_data,session):
+    def set_data(self, input_data):
         try:
             # all values that are strictly necessary, and the endpoint will not work without them
-            all_values = ["data_path","user_models_path", "model_weights", "num_classes", "input_shape", "target_column", "window_size", "group_by"]
+            all_values = ["data_path","user_models_path","input_shape_user_modeling", "model_weights", "num_classes", "input_shape", "target_column", "window_size", "group_by"]
             ServiceUtils.set_necessary_data(self, all_values, input_data)
         except Exception as e:
             raise Exception(f"Error happened when loading in the data. {e}")
@@ -45,7 +45,7 @@ class TrainModelService(GeneralCalculationService):
                 X, user_model_data_extended, y, test_size=0.2, random_state=42
             )
             X_train, X_val,user_model_train, user_model_val, y_train, y_val = np.array(X_train),np.array(X_val),np.array(user_model_train),np.array(user_model_val),np.array(y_train),np.array(y_val),
-            model = FraudDetectionModel(self.model_weights, self.input_shape, self.num_classes)
+            model = FraudDetectionModel(self.model_weights, self.input_shape, self.input_shape_user_modeling, self.num_classes)
             print(user_model_train.shape)
             model.train(X_train, X_val, y_train, y_val,user_model_train,user_model_val)
             model.save_model(self.model_weights)
@@ -62,8 +62,6 @@ class TrainModelService(GeneralCalculationService):
         return result
 
     def handle_service(self, dict, **kwargs):
-        # session data
-        data = kwargs.get("data",None)
 
-        return self.set_data(dict,data).calculate(), {"Dictionary": "That holds the values that will be stored in the session data"}
+        return self.set_data(dict).calculate(), {"Dictionary": "That holds the values that will be stored in the session data"}
 
